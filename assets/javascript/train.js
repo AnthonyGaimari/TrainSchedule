@@ -21,11 +21,14 @@
     console.log("The read failed: " + errorObject.code);
   });
 
-  $("#button").on("click", function(){
-    database.ref().push({
-      clickCount: clickCounter
-      clickCount: clickCounter
-      clickCount: clickCounter
+  // $("#button").on("click", function(){
+  //   database.ref().push({
+  //     clickCount: clickCounter
+  //     clickCount: clickCounter
+  //     clickCount: clickCounter
 
-    });
-  })
+  //   });
+  // })
+
+
+
