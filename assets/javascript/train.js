@@ -22,7 +22,7 @@ database.ref().on("value", function (snapshot) {
 });
 
 // Button for Trains
-$("#trainButton").click(function (event) {
+$("#trainButton").on("click",function (event) {
   //If an event goes unhandled, its default action should not be taken as it normally would be
   event.preventDefault();
   // Grabs user input and stores them into variables
@@ -71,11 +71,9 @@ database.ref().on("child_added", function (childSnapshot, prevChildKey) {
   var newFirstTrain = childSnapshot.val().firstTrain;
   var newFrequency = childSnapshot.val().frequency;
 
-  // Train Info
-  console.log(newTrain);
-  console.log(newDestination);
-  console.log("FIRST TRAIN DEPARTED AT: " + newFirstTrain);
-  console.log("THE TRAIN ARRIVES EVERY " + newFrequency + " MINUTES");
+
+  $("#train-table > tbody").append("<tr><td>" + newTrain + "</td> <td>" + newDestination + "</td> <td>" +
+  newFrequency + "</td><td>" + nextArrival2 + "</td><td>" + minutesAway + "</td></tr>");
 
 
 });
