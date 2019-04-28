@@ -11,6 +11,7 @@ var config = {
   messagingSenderId: "1035098701759"
 };
 firebase.initializeApp(config);
+
 var database = firebase.database();
 
 database.ref().on("value", function (snapshot) {
@@ -22,7 +23,7 @@ database.ref().on("value", function (snapshot) {
 });
 
 // Button for Trains
-$("#trainButton").on("click",function (event) {
+$("#trainButton").on("click", function (event) {
   //If an event goes unhandled, its default action should not be taken as it normally would be
   event.preventDefault();
   // Grabs user input and stores them into variables
@@ -30,8 +31,6 @@ $("#trainButton").on("click",function (event) {
   var newDestination = $("#destination-input").val().trim();
   var newFirstTrain = $("#first-train-input").val().trim();
   var newFrequency = $("#frequency-input").val().trim();
-
- 
 
   newObject = {
     train: newTrain,
@@ -58,22 +57,28 @@ $("#trainButton").on("click",function (event) {
 
 });
 
-// 3. Create Firebase event for adding employee to the database and a row in the html when a user adds an entry
-// "child_added" is a firebase event, such as "child-removed", "child_changed", and "child_moved"
-
 database.ref().on("child_added", function (childSnapshot, prevChildKey) {
 
   console.log(childSnapshot.val());
 
-  // Store everything into a variable.
   var newTrain = childSnapshot.val().train;
   var newDestination = childSnapshot.val().destination;
   var newFirstTrain = childSnapshot.val().firstTrain;
   var newFrequency = childSnapshot.val().frequency;
 
+  // Train Info
+  console.log("First Train: " + newFirstTrain);
+  console.log("Arrival " + newFrequency + " in minutes");
+
+  var firstTrainConverted = moment(newFirstTrain, "hh:mm").subtract(1, "days");
+  var diffTime = moment().diff(moment(firstTrainConverted), "minutes");
+  var timeApart = diffTime % newFrequency;
+  var minutesAway = newFrequency - timeApart;
+  var nextArrival = moment().add(minutesAway, "minutes");
+  var nextArrival2 = moment(nextArrival).format("hh:mm");
 
   $("#train-table > tbody").append("<tr><td>" + newTrain + "</td> <td>" + newDestination + "</td> <td>" +
-  newFrequency + "</td><td>" + nextArrival2 + "</td><td>" + minutesAway + "</td></tr>");
+    newFrequency + "</td><td>" + nextArrival2 + "</td><td>" + minutesAway + "</td></tr>");
 
 
 });
